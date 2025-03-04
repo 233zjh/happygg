@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.item.mapper.ItemMapper">
+
+    <resultMap type="com.ruoyi.item.domain.Item" id="ItemResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="groupItemId"    column="group_item_id"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="description"    column="description"    />
+        <result property="isHidden"    column="is_hidden"    />
+        <result property="sort"    column="sort"    />
+        <result property="groupItemName"    column="group_item_name"    />
+    </resultMap>
+
+    <sql id="selectItemVo">
+        select item.id, item.name, item.type, item.group_item_id, item.file_path, item.description, item.is_hidden, item.sort
+        , gi.group_item_name from item left join happygg.group_item gi on gi.id = item.group_item_id
+    </sql>
+
+    <select id="selectItemList" parameterType="com.ruoyi.item.domain.Item" resultMap="ItemResult">
+        <include refid="selectItemVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="groupItemId != null "> and group_item_id = #{groupItemId}</if>
+            <if test="isHidden != null "> and item.is_hidden = #{isHidden}</if>
+        </where>
+        order by gi.group_item_name asc
+    </select>
+
+</mapper>

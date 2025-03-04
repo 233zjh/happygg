@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.categoryItem.mapper.CategoryItemMapper">
+
+    <resultMap type="com.ruoyi.categoryItem.domain.CategoryItem" id="CategoryItemResult">
+            <result property="id"    column="id"    />
+            <result property="categoryId"    column="category_id"    />
+            <result property="itemId"    column="item_id"    />
+    </resultMap>
+
+    <sql id="selectCategoryItemVo">
+        select id, category_id, item_id from category_item
+    </sql>
+
+</mapper>

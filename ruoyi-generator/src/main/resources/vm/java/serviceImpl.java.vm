@@ -1,0 +1,99 @@
+package ${packageName}.service.impl;
+
+import java.util.List;
+import java.util.Arrays;
+import org.springframework.beans.factory.annotation.Autowired;
+import ${packageName}.domain.${ClassName};
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import ${packageName}.mapper.${ClassName}Mapper;
+import ${packageName}.service.I${ClassName}Service;
+import org.springframework.stereotype.Service;
+
+/**
+ * ${functionName}Service接口
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Service
+public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${ClassName}> implements I${ClassName}Service{
+
+    @Autowired
+    private ${ClassName}Mapper ${className}Mapper;
+
+    private QueryWrapper<${ClassName}> getWrapper(${ClassName} params){
+        QueryWrapper<${ClassName}> queryWrapper = new QueryWrapper<>();
+        if (params != null){
+
+        }
+        return queryWrapper;
+    }
+
+    /**
+     * 查询${functionName}列表
+     *
+     * @param ${className} ${functionName}
+     * @return ${functionName}集合
+     */
+    @Override
+    public List<${ClassName}> select${ClassName}List(${ClassName} ${className}) {
+        return ${className}Mapper.selectList(getWrapper(${className}));
+    }
+
+    /**
+     * 新增${functionName}
+     *
+     * @param ${className} ${functionName}
+     * @return 结果
+     */
+    @Override
+    public int insert${ClassName}(${ClassName} ${className}) {
+
+        return ${className}Mapper.insert(${className});
+    }
+
+    /**
+     * 修改${functionName}
+     *
+     * @param ${className} ${functionName}
+     * @return 结果
+     */
+    @Override
+    public int update${ClassName}(${ClassName} ${className}) {
+        return ${className}Mapper.updateById(${className});
+    }
+
+    /**
+     * 批量删除${functionName}
+     *
+     * @param ${pkColumn.javaField}s 需要删除的${functionName}主键集合
+     * @return 结果
+     */
+    @Override
+    public int delete${ClassName}By${pkColumn.capJavaField}s(${pkColumn.javaType}[] ${pkColumn.javaField}s) {
+        return ${className}Mapper.deleteBatchIds(Arrays.asList(${pkColumn.javaField}s));
+    }
+
+    /**
+     * 删除${functionName}信息
+     *
+     * @param ${pkColumn.javaField} ${functionName}主键
+     * @return 结果
+     */
+    @Override
+    public int delete${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaType} ${pkColumn.javaField}) {
+        return ${className}Mapper.deleteById(${pkColumn.javaField});
+    }
+
+    /**
+     * 获取${functionName}信息
+     *
+     * @param ${pkColumn.javaField} ${functionName}主键
+     * @return 结果
+     */
+    @Override
+    public ${ClassName} select${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaType} ${pkColumn.javaField}) {
+        return ${className}Mapper.selectById(${pkColumn.javaField});
+    }
+}

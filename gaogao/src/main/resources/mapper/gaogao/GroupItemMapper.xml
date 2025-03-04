@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.groupitem.mapper.GroupItemMapper">
+
+    <resultMap type="GroupItem" id="GroupItemResult">
+        <result property="id"    column="id"    />
+        <result property="groupItemName"    column="group_item_name"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="image"    column="image"    />
+        <result property="isHidden"    column="is_hidden"    />
+        <result property="sort"    column="sort"    />
+        <result property="description"    column="description"    />
+        <result property="categoryName" column="category_name" />
+        <result property="itemCount" column="item_count" />
+    </resultMap>
+
+    <sql id="selectGroupItemVo">
+        select group_item.id, group_item_name, category_id, group_item.image, group_item.is_hidden, group_item.sort, group_item.description, category.category_name, count(*) as item_count from group_item left join category
+        on group_item.category_id = category.id left join happygg.item i on group_item.id = i.group_item_id
+    </sql>
+
+    <select id="selectGroupItemList" parameterType="GroupItem" resultMap="GroupItemResult">
+        <include refid="selectGroupItemVo"/>
+        <where>
+            <if test="groupItemName != null  and groupItemName != ''"> and group_item_name like concat('%', #{groupItemName}, '%')</if>
+            <if test="categoryId != null "> and category_id = #{categoryId}</if>
+            <if test="isHidden != null "> and is_hidden = #{isHidden}</if>
+        </where>
+        group by group_item.id
+    </select>
+
+    <select id="selectGroupItemById" parameterType="Long" resultMap="GroupItemResult">
+        <include refid="selectGroupItemVo"/>
+        where group_item.id = #{id}
+        group by group_item.id
+    </select>
+
+    <insert id="insertGroupItem" parameterType="GroupItem" useGeneratedKeys="true" keyProperty="id">
+        insert into group_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="groupItemName != null and groupItemName != ''">group_item_name,</if>
+            <if test="categoryId != null">category_id,</if>
+            <if test="image != null">image,</if>
+            <if test="isHidden != null">is_hidden,</if>
+            <if test="sort != null">sort,</if>
+            <if test="description != null">description,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="groupItemName != null and groupItemName != ''">#{groupItemName},</if>
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="image != null">#{image},</if>
+            <if test="isHidden != null">#{isHidden},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="description != null">#{description},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGroupItem" parameterType="GroupItem">
+        update group_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="groupItemName != null and groupItemName != ''">group_item_name = #{groupItemName},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="isHidden != null">is_hidden = #{isHidden},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="description != null">description = #{description},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGroupItemById" parameterType="Long">
+        delete from group_item where id = #{id}
+    </delete>
+
+    <delete id="deleteGroupItemByIds" parameterType="String">
+        delete from group_item where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
